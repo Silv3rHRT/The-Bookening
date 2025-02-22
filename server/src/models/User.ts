@@ -1,9 +1,14 @@
 import { Schema, model, type Document } from 'mongoose';
 import bcrypt from 'bcrypt';
 
-// import schema from Book.js
-import bookSchema from './Book.js';
-import type { BookDocument } from './Book.js';
+interface BookDocument extends Document {
+  bookId: string;
+  title: string;
+  authors: string[];
+  description: string;
+  image: string;
+  link: string;
+}
 
 export interface UserDocument extends Document {
   id: string;
@@ -14,6 +19,33 @@ export interface UserDocument extends Document {
   isCorrectPassword(password: string): Promise<boolean>;
   bookCount: number;
 }
+
+export const bookSchema = new Schema<BookDocument>({
+  authors: [
+    {
+      type: String,
+    },
+  ],
+  description: {
+    type: String,
+    required: true,
+  },
+  // saved book id from GoogleBooks
+  bookId: {
+    type: String,
+    required: true,
+  },
+  image: {
+    type: String,
+  },
+  link: {
+    type: String,
+  },
+  title: {
+    type: String,
+    required: true,
+  },
+});
 
 const userSchema = new Schema<UserDocument>(
   {
@@ -64,5 +96,7 @@ userSchema.virtual('bookCount').get(function () {
 });
 
 const User = model<UserDocument>('User', userSchema);
+
+
 
 export default User;
