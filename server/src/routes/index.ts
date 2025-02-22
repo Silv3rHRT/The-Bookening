@@ -10,10 +10,10 @@ import apiRoutes from './api/index.js';
 
 router.use('/api', apiRoutes);
 
-//TODO: look at 2/19 class video for fixes to this
+
 // serve up react front-end in production
 router.use((_req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, '../../client/build/index.html'));
+  res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
 });
 
 export default router;
