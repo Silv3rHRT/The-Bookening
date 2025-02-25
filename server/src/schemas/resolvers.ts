@@ -1,7 +1,7 @@
 import { Request } from "express";
 import { User } from "../models/index.js";
-import { AuthenticationError } from "../services/auth.js";
-import jwt from "jsonwebtoken";
+import { AuthenticationError, signToken } from "../services/auth.js";
+
 
 interface addUserArgs {
   username: string;
@@ -56,12 +56,8 @@ const resolvers = {
         throw new AuthenticationError("Incorrect password!");
       }
 
-      // Generate a token. Ensure that process.env.JWT_SECRET is defined in your environment.
-      const token = jwt.sign(
-        { id: user._id, email: user.email },
-        process.env.JWT_SECRET as string,
-        { expiresIn: "1h" }
-      );
+      // Generate a token. Ensure that process.env.JWT_SECRET_KEY is defined in your environment.
+      const token = signToken( user.username, user.email, user._id);
 
       return {
         token,
@@ -112,11 +108,7 @@ const resolvers = {
           "Something is wrong with your user creation, my friend."
         );
       }
-      const token = jwt.sign(
-        { id: user._id, email: user.email },
-        process.env.JWT_SECRET as string,
-        { expiresIn: "1h" }
-      );
+      const token = signToken( user.username, user.email, user._id);
       return {
         token,
         user,
