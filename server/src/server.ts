@@ -5,10 +5,13 @@ import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServer } from "@apollo/server";
 import { typeDefs, resolvers } from "./schemas/index.js";
 import { authenticateToken } from "./services/auth.js";
+import { fileURLToPath } from "node:url";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 const server = new ApolloServer({ typeDefs, resolvers });
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const startApolloServer = async () => {
   await server.start();
