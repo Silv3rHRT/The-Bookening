@@ -15,17 +15,6 @@ export const LOGIN = gql`mutation Login($password: String!, $username: String, $
 export const SAVE_BOOK = gql`mutation SaveBook($userId: ID!, $bookData: BookInput!) {
     saveBook(userId: $userId, bookData: $bookData) {
       _id
-      username
-      email
-      savedBooks {
-        bookId
-        title
-        authors
-        description
-        image
-        link
-      }
-      bookCount
     }
   }`
 

@@ -29,6 +29,8 @@ interface deleteBookArgs {
 const resolvers = {
   Query: {
     me: async (_parent: any, _args: any, context: any) => {
+      console.log(context.req.user);
+      
       if (context.user) {
         return await User.findOne({ _id: context.user._id }).populate(
           "savedBooks"

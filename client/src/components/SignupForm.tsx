@@ -15,7 +15,7 @@ const SignupForm = ({}: { handleModalClose: () => void }) => {
   const [validated] = useState(false);
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
-  const [createUser, {error, data}] = useMutation(ADD_USER)
+  const [createUser, {error}] = useMutation(ADD_USER)
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -33,14 +33,13 @@ const SignupForm = ({}: { handleModalClose: () => void }) => {
     }
 
     try {
-      await createUser({variables: {...userFormData},});
-
-      const { token } = data.addUser;
+      const { data } = await createUser({variables: {...userFormData},});
+      
       if (error) {
         throw new Error("what did you do wrong!")
       }
 
-      Auth.login(token);
+      Auth.login(data.createUser.token);
     } catch (err) {
       console.error(err);
       setShowAlert(true);
